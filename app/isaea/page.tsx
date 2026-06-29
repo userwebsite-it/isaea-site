@@ -418,86 +418,76 @@ export default function IsaeaPage() {
         </svg>
 
         {/* Album-cover bouquet — desktop only */}
-        <div className="hidden md:block absolute z-20" style={{ left: '2%', bottom: 0, height: '65vh', width: '220px' }}>
-          <svg width="220" height="100%" viewBox="0 0 220 500" style={{ overflow: 'visible' }}>
+        <div className="hidden md:block absolute z-20" style={{ left: '20px', bottom: '20px', height: '35vh', width: '180px' }}>
+          <svg width="180" height="100%" viewBox="0 0 180 280" style={{ overflow: 'visible' }}>
             <defs>
-              {/* Circular clip paths for each album cover */}
-              <clipPath id="clip0"><circle cx="110" cy="30" r="30" /></clipPath>
-              <clipPath id="clip1"><circle cx="60" cy="80" r="30" /></clipPath>
-              <clipPath id="clip2"><circle cx="160" cy="70" r="30" /></clipPath>
-              <clipPath id="clip3"><circle cx="30" cy="140" r="30" /></clipPath>
-              <clipPath id="clip4"><circle cx="190" cy="130" r="30" /></clipPath>
-              {/* Drop shadow filter */}
+              {/* Circular clip paths — r=17.5 (35px diameter) */}
+              <clipPath id="clip0"><circle cx="90" cy="17" r="17.5" /></clipPath>
+              <clipPath id="clip1"><circle cx="48" cy="48" r="17.5" /></clipPath>
+              <clipPath id="clip2"><circle cx="132" cy="42" r="17.5" /></clipPath>
+              <clipPath id="clip3"><circle cx="22" cy="100" r="17.5" /></clipPath>
+              <clipPath id="clip4"><circle cx="158" cy="90" r="17.5" /></clipPath>
               <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#000" floodOpacity="0.6" />
+                <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000" floodOpacity="0.6" />
               </filter>
             </defs>
 
             {/* ── STEMS ── */}
             {/* Center tall */}
-            <path d="M110,500 C108,420 112,320 110,30" fill="none" stroke="#8b0000" strokeWidth="2" />
+            <path d="M90,280 C89,230 91,160 90,17" fill="none" stroke="#8b0000" strokeWidth="1.5" />
             {/* Left mid */}
-            <path d="M110,500 C100,430 80,330 60,80" fill="none" stroke="#8b0000" strokeWidth="2" />
+            <path d="M90,280 C82,240 65,180 48,48" fill="none" stroke="#8b0000" strokeWidth="1.5" />
             {/* Right mid */}
-            <path d="M110,500 C118,430 145,340 160,70" fill="none" stroke="#8b0000" strokeWidth="2" />
+            <path d="M90,280 C97,240 118,185 132,42" fill="none" stroke="#8b0000" strokeWidth="1.5" />
             {/* Far left short */}
-            <path d="M110,500 C95,440 60,370 30,140" fill="none" stroke="#8b0000" strokeWidth="2" />
+            <path d="M90,280 C78,245 48,205 22,100" fill="none" stroke="#8b0000" strokeWidth="1.5" />
             {/* Far right short */}
-            <path d="M110,500 C125,440 165,370 190,130" fill="none" stroke="#8b0000" strokeWidth="2" />
+            <path d="M90,280 C102,245 138,205 158,90" fill="none" stroke="#8b0000" strokeWidth="1.5" />
 
             {/* ── LEAVES ── */}
-            {/* Center stem leaves */}
-            <ellipse cx="112" cy="200" rx="12" ry="5" fill="#1a3a1a" opacity="0.7" transform="rotate(10 112 200)" />
-            <ellipse cx="108" cy="320" rx="11" ry="5" fill="#1a3a1a" opacity="0.7" transform="rotate(-8 108 320)" />
-            {/* Left stem leaves */}
-            <ellipse cx="75" cy="220" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(-20 75 220)" />
-            <ellipse cx="85" cy="340" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(15 85 340)" />
-            {/* Right stem leaves */}
-            <ellipse cx="148" cy="210" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(18 148 210)" />
-            <ellipse cx="138" cy="330" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(-14 138 330)" />
-            {/* Far left leaves */}
-            <ellipse cx="45" cy="270" rx="9" ry="4" fill="#1a3a1a" opacity="0.7" transform="rotate(-25 45 270)" />
-            {/* Far right leaves */}
-            <ellipse cx="178" cy="255" rx="9" ry="4" fill="#1a3a1a" opacity="0.7" transform="rotate(22 178 255)" />
+            <ellipse cx="91" cy="110" rx="7" ry="3" fill="#1a3a1a" opacity="0.7" transform="rotate(10 91 110)" />
+            <ellipse cx="89" cy="185" rx="6.5" ry="3" fill="#1a3a1a" opacity="0.7" transform="rotate(-8 89 185)" />
+            <ellipse cx="60" cy="125" rx="6" ry="2.8" fill="#1a3a1a" opacity="0.7" transform="rotate(-20 60 125)" />
+            <ellipse cx="68" cy="200" rx="6" ry="2.8" fill="#1a3a1a" opacity="0.7" transform="rotate(15 68 200)" />
+            <ellipse cx="118" cy="120" rx="6" ry="2.8" fill="#1a3a1a" opacity="0.7" transform="rotate(18 118 120)" />
+            <ellipse cx="110" cy="190" rx="6" ry="2.8" fill="#1a3a1a" opacity="0.7" transform="rotate(-14 110 190)" />
+            <ellipse cx="34" cy="160" rx="5.5" ry="2.5" fill="#1a3a1a" opacity="0.7" transform="rotate(-25 34 160)" />
+            <ellipse cx="146" cy="152" rx="5.5" ry="2.5" fill="#1a3a1a" opacity="0.7" transform="rotate(22 146 152)" />
 
-            {/* ── RIBBON / BOW at tie point ── */}
-            <ellipse cx="96" cy="478" rx="18" ry="8" fill="#c1121f" opacity="0.9" transform="rotate(-20 96 478)" />
-            <ellipse cx="124" cy="478" rx="18" ry="8" fill="#c1121f" opacity="0.9" transform="rotate(20 124 478)" />
-            <ellipse cx="110" cy="480" rx="8" ry="5" fill="#a00f1a" opacity="1" />
-            <path d="M102,475 Q110,490 118,475" fill="#c1121f" opacity="0.8" />
+            {/* ── RIBBON / BOW ── */}
+            <ellipse cx="80" cy="268" rx="12" ry="5" fill="#c1121f" opacity="0.9" transform="rotate(-20 80 268)" />
+            <ellipse cx="100" cy="268" rx="12" ry="5" fill="#c1121f" opacity="0.9" transform="rotate(20 100 268)" />
+            <ellipse cx="90" cy="270" rx="5" ry="3.5" fill="#a00f1a" opacity="1" />
+            <path d="M85,267 Q90,275 95,267" fill="#c1121f" opacity="0.8" />
 
-            {/* ── ALBUM COVERS with clipPath circles ── */}
+            {/* ── ALBUM COVERS ── */}
             {/* passion — center tall */}
-            <image href="https://i.scdn.co/image/ab67616d0000b27344a5b27a3699fd055f54dfe1" x="80" y="0" width="60" height="60" clipPath="url(#clip0)" filter="url(#dropShadow)" />
-            <circle cx="110" cy="30" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
-
+            <image href="https://i.scdn.co/image/ab67616d0000b27344a5b27a3699fd055f54dfe1" x="72.5" y="-0.5" width="35" height="35" clipPath="url(#clip0)" filter="url(#dropShadow)" />
+            <circle cx="90" cy="17" r="17.5" fill="none" stroke="#f0ece4" strokeWidth="1.5" />
             {/* teeth — left mid */}
-            <image href="https://i.scdn.co/image/ab67616d0000b27382fd407b34a2bc1c49479ba3" x="30" y="50" width="60" height="60" clipPath="url(#clip1)" filter="url(#dropShadow)" />
-            <circle cx="60" cy="80" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
-
+            <image href="https://i.scdn.co/image/ab67616d0000b27382fd407b34a2bc1c49479ba3" x="30.5" y="30.5" width="35" height="35" clipPath="url(#clip1)" filter="url(#dropShadow)" />
+            <circle cx="48" cy="48" r="17.5" fill="none" stroke="#f0ece4" strokeWidth="1.5" />
             {/* Angel — right mid */}
-            <image href="https://i.scdn.co/image/ab67616d0000b2739a7c3a0e77be12a0cf9e3cc7" x="130" y="40" width="60" height="60" clipPath="url(#clip2)" filter="url(#dropShadow)" />
-            <circle cx="160" cy="70" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
-
+            <image href="https://i.scdn.co/image/ab67616d0000b2739a7c3a0e77be12a0cf9e3cc7" x="114.5" y="24.5" width="35" height="35" clipPath="url(#clip2)" filter="url(#dropShadow)" />
+            <circle cx="132" cy="42" r="17.5" fill="none" stroke="#f0ece4" strokeWidth="1.5" />
             {/* sweettooth — far left */}
-            <image href="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db" x="0" y="110" width="60" height="60" clipPath="url(#clip3)" filter="url(#dropShadow)" />
-            <circle cx="30" cy="140" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
-
+            <image href="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db" x="4.5" y="82.5" width="35" height="35" clipPath="url(#clip3)" filter="url(#dropShadow)" />
+            <circle cx="22" cy="100" r="17.5" fill="none" stroke="#f0ece4" strokeWidth="1.5" />
             {/* insomnia — far right */}
-            <image href="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db" x="160" y="100" width="60" height="60" clipPath="url(#clip4)" filter="url(#dropShadow)" />
-            <circle cx="190" cy="130" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
+            <image href="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db" x="140.5" y="72.5" width="35" height="35" clipPath="url(#clip4)" filter="url(#dropShadow)" />
+            <circle cx="158" cy="90" r="17.5" fill="none" stroke="#f0ece4" strokeWidth="1.5" />
           </svg>
 
-          {/* Clickable overlay buttons + labels for each album cover */}
+          {/* Clickable overlay buttons + labels */}
           {[
-            { cx: 110, cy: 30, name: 'passion', link: 'https://open.spotify.com/album/4Lk4E6CJxCka7hVweTXl13' },
-            { cx: 60,  cy: 80,  name: 'teeth',     link: 'https://open.spotify.com/album/24Ufjk9c26f06iGSUkom7v' },
-            { cx: 160, cy: 70,  name: 'Angel',     link: 'https://open.spotify.com/album/450ZSg2ugu3jm396J0dBO9' },
-            { cx: 30,  cy: 140, name: 'sweettooth',link: 'https://open.spotify.com/track/4VfxSZpCqJBf1hbl9aStay' },
-            { cx: 190, cy: 130, name: 'insomnia',  link: 'https://open.spotify.com/album/5noUTCWdwbvlP5ybkVBMwP' },
+            { cx: 90,  cy: 17,  name: 'passion',    link: 'https://open.spotify.com/album/4Lk4E6CJxCka7hVweTXl13' },
+            { cx: 48,  cy: 48,  name: 'teeth',       link: 'https://open.spotify.com/album/24Ufjk9c26f06iGSUkom7v' },
+            { cx: 132, cy: 42,  name: 'Angel',       link: 'https://open.spotify.com/album/450ZSg2ugu3jm396J0dBO9' },
+            { cx: 22,  cy: 100, name: 'sweettooth',  link: 'https://open.spotify.com/track/4VfxSZpCqJBf1hbl9aStay' },
+            { cx: 158, cy: 90,  name: 'insomnia',    link: 'https://open.spotify.com/album/5noUTCWdwbvlP5ybkVBMwP' },
           ].map(({ cx, cy, name, link }) => {
-            const svgW = 220;
-            const svgH = 500;
+            const svgW = 180;
+            const svgH = 280;
             return (
               <a
                 key={name}
@@ -506,23 +496,19 @@ export default function IsaeaPage() {
                 rel="noopener noreferrer"
                 className="group absolute flex flex-col items-center"
                 style={{
-                  left: `calc(${(cx / svgW) * 100}% - 30px)`,
-                  top: `calc(${(cy / svgH) * 100}% - 30px)`,
-                  width: '60px',
+                  left: `calc(${(cx / svgW) * 100}% - 17.5px)`,
+                  top: `calc(${(cy / svgH) * 100}% - 17.5px)`,
+                  width: '35px',
                 }}
               >
-                {/* hover scale ring */}
-                <div
-                  className="w-[60px] h-[60px] rounded-full transition-transform duration-200 group-hover:scale-110 flex items-center justify-center relative"
-                >
-                  {/* red play icon on hover */}
+                <div className="w-[35px] h-[35px] rounded-full transition-transform duration-200 group-hover:scale-110 flex items-center justify-center relative">
                   <div className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center">
-                    <svg className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" width="18" height="18" viewBox="0 0 24 24" fill="#c1121f">
+                    <svg className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" width="12" height="12" viewBox="0 0 24 24" fill="#c1121f">
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>
                 </div>
-                <span style={{ fontSize: '9px', color: '#f0ece4', opacity: 0.6, marginTop: '4px', whiteSpace: 'nowrap', letterSpacing: '0.05em' }}>{name}</span>
+                <span style={{ fontSize: '8px', color: '#f0ece4', opacity: 0.6, marginTop: '3px', whiteSpace: 'nowrap', letterSpacing: '0.05em' }}>{name}</span>
               </a>
             );
           })}
