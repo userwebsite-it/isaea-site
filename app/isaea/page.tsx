@@ -332,7 +332,7 @@ export default function IsaeaPage() {
         {/* Large rose branch bottom-left */}
         <svg
           className="absolute bottom-0 left-0 pointer-events-none"
-          style={{ opacity: 0.6, width: 'clamp(260px, 45vw, 620px)', height: 'clamp(400px, 65vh, 800px)' }}
+          style={{ opacity: 0.8, width: 'clamp(260px, 45vw, 620px)', height: 'clamp(400px, 65vh, 800px)' }}
           viewBox="0 0 500 700"
         >
           {/* Main stem */}
@@ -357,25 +357,25 @@ export default function IsaeaPage() {
           <ellipse cx="208" cy="273" rx="12" ry="6" fill="#3a6b4a" opacity="0.6" transform="rotate(20 208 273)" />
           <ellipse cx="197" cy="124" rx="10" ry="5" fill="#2d5a3d" opacity="0.7" transform="rotate(-40 197 124)" />
           <ellipse cx="262" cy="102" rx="9" ry="4.5" fill="#3a6b4a" opacity="0.6" transform="rotate(15 262 102)" />
-          {/* Rose at bottom branch tip */}
-          <circle cx="63" cy="368" r="18" fill="#c1121f" opacity="0.85" />
-          <circle cx="63" cy="368" r="13" fill="#a00f1a" opacity="0.7" />
-          <circle cx="63" cy="368" r="8" fill="#c1121f" opacity="0.9" />
-          <circle cx="63" cy="368" r="4" fill="#8b0d15" opacity="1" />
-          <ellipse cx="47" cy="358" rx="10" ry="6" fill="#c1121f" opacity="0.6" transform="rotate(-20 47 358)" />
-          <ellipse cx="79" cy="358" rx="10" ry="6" fill="#a00f1a" opacity="0.6" transform="rotate(20 79 358)" />
-          <ellipse cx="63" cy="352" rx="9" ry="5" fill="#c1121f" opacity="0.5" transform="rotate(0 63 352)" />
-          {/* Rose at mid branch tip */}
-          <circle cx="175" cy="195" r="15" fill="#c1121f" opacity="0.8" />
-          <circle cx="175" cy="195" r="10" fill="#a00f1a" opacity="0.7" />
-          <circle cx="175" cy="195" r="6" fill="#c1121f" opacity="0.9" />
-          <circle cx="175" cy="195" r="3" fill="#8b0d15" opacity="1" />
-          <ellipse cx="162" cy="186" rx="8" ry="5" fill="#c1121f" opacity="0.5" transform="rotate(-20 162 186)" />
-          <ellipse cx="188" cy="186" rx="8" ry="5" fill="#a00f1a" opacity="0.5" transform="rotate(20 188 186)" />
-          {/* Rose at top branch tip */}
-          <circle cx="228" cy="38" r="12" fill="#c1121f" opacity="0.75" />
-          <circle cx="228" cy="38" r="8" fill="#a00f1a" opacity="0.7" />
-          <circle cx="228" cy="38" r="4" fill="#c1121f" opacity="0.9" />
+          {/* Rose at bottom branch tip — enlarged */}
+          <circle cx="63" cy="368" r="23" fill="#c1121f" opacity="0.85" />
+          <circle cx="63" cy="368" r="17" fill="#a00f1a" opacity="0.7" />
+          <circle cx="63" cy="368" r="10" fill="#c1121f" opacity="0.9" />
+          <circle cx="63" cy="368" r="5" fill="#8b0d15" opacity="1" />
+          <ellipse cx="44" cy="355" rx="13" ry="7" fill="#c1121f" opacity="0.6" transform="rotate(-20 44 355)" />
+          <ellipse cx="82" cy="355" rx="13" ry="7" fill="#a00f1a" opacity="0.6" transform="rotate(20 82 355)" />
+          <ellipse cx="63" cy="349" rx="11" ry="6" fill="#c1121f" opacity="0.5" transform="rotate(0 63 349)" />
+          {/* Rose at mid branch tip — enlarged */}
+          <circle cx="175" cy="195" r="20" fill="#c1121f" opacity="0.8" />
+          <circle cx="175" cy="195" r="14" fill="#a00f1a" opacity="0.7" />
+          <circle cx="175" cy="195" r="8" fill="#c1121f" opacity="0.9" />
+          <circle cx="175" cy="195" r="4" fill="#8b0d15" opacity="1" />
+          <ellipse cx="158" cy="184" rx="11" ry="6" fill="#c1121f" opacity="0.5" transform="rotate(-20 158 184)" />
+          <ellipse cx="192" cy="184" rx="11" ry="6" fill="#a00f1a" opacity="0.5" transform="rotate(20 192 184)" />
+          {/* Rose at top branch tip — enlarged */}
+          <circle cx="228" cy="38" r="16" fill="#c1121f" opacity="0.75" />
+          <circle cx="228" cy="38" r="11" fill="#a00f1a" opacity="0.7" />
+          <circle cx="228" cy="38" r="6" fill="#c1121f" opacity="0.9" />
           {/* Bud on main stem */}
           <ellipse cx="155" cy="330" rx="8" ry="12" fill="#c1121f" opacity="0.7" />
           <ellipse cx="155" cy="323" rx="5" ry="7" fill="#8b0d15" opacity="0.8" />
@@ -416,6 +416,75 @@ export default function IsaeaPage() {
           <circle cx="230" cy="50" r="3" fill="#c1121f" opacity="0.5" />
           <circle cx="185" cy="170" r="2" fill="#f0ece4" opacity="0.4" />
         </svg>
+
+        {/* Polaroid card — left side, desktop only */}
+        <div
+          className="hidden md:block absolute z-20"
+          style={{
+            left: '3%',
+            top: '60%',
+            transform: 'translateY(-50%) rotate(-6deg)',
+            width: '160px',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+            cursor: 'default'
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(-2deg) translateY(-6px)';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 16px 40px rgba(0,0,0,0.7)';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(-6deg)';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 18px rgba(0,0,0,0.5)';
+          }}
+        >
+          <div
+            style={{
+              background: '#fff',
+              padding: '8px 8px 28px 8px',
+              boxShadow: '0 4px 18px rgba(0,0,0,0.5)'
+            }}
+          >
+            <Image
+              src="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db"
+              alt="sweettooth"
+              width={144}
+              height={144}
+              style={{ width: '100%', height: 'auto', display: 'block' }}
+            />
+            <p
+              style={{
+                textAlign: 'center',
+                marginTop: '6px',
+                fontSize: '13px',
+                color: '#2a1a0e',
+                fontFamily: '"Brush Script MT", "Comic Sans MS", cursive',
+                letterSpacing: '0.02em'
+              }}
+            >
+              late nights 🌹
+            </p>
+          </div>
+        </div>
+
+        {/* Scattered text fragments — far left, desktop only */}
+        <div
+          className="hidden md:block absolute pointer-events-none"
+          style={{ left: '1.5%', top: '18%', transform: 'rotate(3deg)', opacity: 0.4, fontSize: '11px', letterSpacing: '0.18em', color: '#f0ece4', fontFamily: 'Georgia, serif', textTransform: 'uppercase' }}
+        >
+          p66
+        </div>
+        <div
+          className="hidden md:block absolute pointer-events-none"
+          style={{ left: '0.8%', top: '48%', transform: 'rotate(-4deg)', opacity: 0.4, fontSize: '10px', letterSpacing: '0.14em', color: '#f0ece4', fontFamily: 'Georgia, serif' }}
+        >
+          brownsville, bk
+        </div>
+        <div
+          className="hidden md:block absolute pointer-events-none"
+          style={{ left: '1.2%', top: '78%', transform: 'rotate(2deg)', opacity: 0.4, fontSize: '10px', letterSpacing: '0.12em', color: '#f0ece4', fontFamily: 'Georgia, serif' }}
+        >
+          3,633 listeners
+        </div>
 
         {/* Listener stats card bottom-right */}
         <div
