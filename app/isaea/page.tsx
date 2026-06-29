@@ -227,6 +227,48 @@ export default function IsaeaPage() {
   const [pulsedDisc, setPulsedDisc] = useState<string | null>(null);
   const [expandedSong, setExpandedSong] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
+  const [typewriterText, setTypewriterText] = useState('');
+  const [typewriterCursor, setTypewriterCursor] = useState(true);
+
+  useEffect(() => {
+    const phrases = [
+      'music for the late nights.',
+      'music for the heartbroken.',
+      'music for the ones who feel too much.'
+    ];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const tick = () => {
+      const current = phrases[phraseIndex];
+      if (!deleting) {
+        charIndex++;
+        setTypewriterText(current.slice(0, charIndex));
+        if (charIndex === current.length) {
+          deleting = true;
+          timeout = setTimeout(tick, 2000);
+          return;
+        }
+      } else {
+        charIndex--;
+        setTypewriterText(current.slice(0, charIndex));
+        if (charIndex === 0) {
+          deleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+      }
+      timeout = setTimeout(tick, deleting ? 40 : 70);
+    };
+
+    timeout = setTimeout(tick, 1200);
+    const cursorInterval = setInterval(() => setTypewriterCursor((v) => !v), 530);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(cursorInterval);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -375,6 +417,27 @@ export default function IsaeaPage() {
           <circle cx="185" cy="170" r="2" fill="#f0ece4" opacity="0.4" />
         </svg>
 
+        {/* Listener stats card bottom-right */}
+        <div
+          className="absolute bottom-8 right-8 z-20 flex flex-col items-end pointer-events-none"
+          style={{
+            background: 'rgba(10,10,10,0.65)',
+            border: '1px solid #c1121f',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: '10px',
+            padding: '12px 18px'
+          }}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#1DB954">
+              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+            </svg>
+            <span style={{ fontFamily: 'Georgia, serif', fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', color: '#f0ece4', fontWeight: 'bold' }}>3,633</span>
+          </div>
+          <span style={{ fontSize: '10px', color: '#888', letterSpacing: '0.12em', textTransform: 'uppercase' }}>monthly listeners</span>
+        </div>
+
         {/* Centered text content */}
         <div className="relative z-10 flex flex-col items-center text-center px-6">
           <h1
@@ -387,8 +450,11 @@ export default function IsaeaPage() {
           <p className="text-sm tracking-[0.3em] mb-2" style={{ color: '#666' }}>
             ( eye-ZAY-uh )
           </p>
-          <p className="text-sm italic mb-8" style={{ fontFamily: 'Georgia, serif', color: '#f0ece4', opacity: 0.7 }}>
+          <p className="text-sm italic mb-4" style={{ fontFamily: 'Georgia, serif', color: '#f0ece4', opacity: 0.7 }}>
             alternative / midwest emo
+          </p>
+          <p className="text-sm italic mb-8 h-5" style={{ fontFamily: 'Georgia, serif', color: '#f0ece4', opacity: 0.5 }}>
+            {typewriterText}<span style={{ color: '#c1121f', opacity: typewriterCursor ? 1 : 0 }}>|</span>
           </p>
           <div className="flex items-center gap-5">
             <a
@@ -423,6 +489,134 @@ export default function IsaeaPage() {
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
               </svg>
             </a>
+          </div>
+        </div>
+
+        {/* Wanted Poster — hidden on mobile, absolute right side on desktop */}
+        <div
+          className="hidden md:block absolute z-20"
+          style={{
+            right: 'clamp(24px, 6vw, 80px)',
+            top: '50%',
+            transform: 'translateY(-50%) rotate(8deg)',
+            width: '280px',
+            transition: 'transform 0.35s ease, box-shadow 0.35s ease',
+            cursor: 'default'
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(4deg)';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 24px 60px rgba(0,0,0,0.8)';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(8deg)';
+            (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
+          }}
+        >
+          {/* Push pin */}
+          <div className="absolute left-1/2 -top-4 z-30" style={{ transform: 'translateX(-50%)' }}>
+            <svg width="22" height="28" viewBox="0 0 22 28">
+              <circle cx="11" cy="9" r="8" fill="#c1121f" stroke="#7a0a10" strokeWidth="1.5"/>
+              <circle cx="11" cy="9" r="4" fill="#e8394a" opacity="0.7"/>
+              <rect x="9.5" y="16" width="3" height="12" rx="1.5" fill="#5a3a1a"/>
+            </svg>
+          </div>
+
+          {/* Poster body */}
+          <div
+            style={{
+              background: '#f5e6c8',
+              border: '5px solid #3d1f0a',
+              outline: '2px solid #1a0d04',
+              padding: '14px 12px 12px',
+              position: 'relative',
+              overflow: 'hidden',
+              boxShadow: 'inset 0 0 40px rgba(0,0,0,0.18)'
+            }}
+          >
+            {/* Aged edge darkening */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'radial-gradient(ellipse at center, transparent 55%, rgba(30,10,0,0.35) 100%)',
+                zIndex: 1
+              }}
+            />
+
+            {/* OUT NOW stamp */}
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                top: '80px',
+                right: '-10px',
+                zIndex: 10,
+                opacity: 0.72,
+                transform: 'rotate(-15deg)'
+              }}
+            >
+              <svg width="90" height="90" viewBox="0 0 90 90">
+                <circle cx="45" cy="45" r="40" fill="none" stroke="#c1121f" strokeWidth="3.5"/>
+                <circle cx="45" cy="45" r="35" fill="none" stroke="#c1121f" strokeWidth="1.2"/>
+                <text x="45" y="40" textAnchor="middle" fill="#c1121f" fontSize="13" fontWeight="900" fontFamily="Arial, sans-serif" letterSpacing="1">OUT</text>
+                <text x="45" y="57" textAnchor="middle" fill="#c1121f" fontSize="13" fontWeight="900" fontFamily="Arial, sans-serif" letterSpacing="1">NOW</text>
+              </svg>
+            </div>
+
+            {/* Poster content */}
+            <div className="relative" style={{ zIndex: 2 }}>
+              <p style={{ textAlign: 'center', fontSize: '9px', fontWeight: 900, letterSpacing: '0.25em', color: '#1a0d04', marginBottom: '3px', fontFamily: 'Arial Black, sans-serif' }}>
+                ⚠ WARNING ⚠
+              </p>
+              <p style={{ textAlign: 'center', fontSize: '28px', fontWeight: 900, lineHeight: 1, letterSpacing: '0.04em', color: '#1a0d04', marginBottom: '8px', fontFamily: 'Georgia, serif', textTransform: 'uppercase' }}>
+                NEW DROP
+              </p>
+
+              {/* Album art */}
+              <div style={{ border: '2px solid #1a0d04', marginBottom: '8px', lineHeight: 0 }}>
+                <Image
+                  src="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db"
+                  alt="sweettooth album art"
+                  width={256}
+                  height={256}
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                />
+              </div>
+
+              <p style={{ textAlign: 'center', fontSize: '22px', fontWeight: 900, color: '#1a0d04', marginBottom: '2px', fontFamily: 'Georgia, serif' }}>
+                isaea
+              </p>
+              <p style={{ textAlign: 'center', fontSize: '14px', fontStyle: 'italic', fontWeight: 700, color: '#1a0d04', marginBottom: '8px', fontFamily: 'Georgia, serif' }}>
+                sweettooth
+              </p>
+
+              <div style={{ borderTop: '1.5px solid #3d1f0a', marginBottom: '7px' }} />
+
+              <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '7px' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ fontSize: '8px', letterSpacing: '0.2em', color: '#5a3a1a', fontWeight: 700, fontFamily: 'Arial, sans-serif', textTransform: 'uppercase', marginBottom: '1px' }}>Plays</p>
+                  <p style={{ fontSize: '13px', fontWeight: 900, color: '#1a0d04', fontFamily: 'Georgia, serif' }}>49,562</p>
+                </div>
+                <div style={{ width: '1px', background: '#3d1f0a', opacity: 0.4 }} />
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ fontSize: '8px', letterSpacing: '0.2em', color: '#5a3a1a', fontWeight: 700, fontFamily: 'Arial, sans-serif', textTransform: 'uppercase', marginBottom: '1px' }}>Released</p>
+                  <p style={{ fontSize: '13px', fontWeight: 900, color: '#1a0d04', fontFamily: 'Georgia, serif' }}>2026</p>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1.5px solid #3d1f0a', marginBottom: '8px' }} />
+
+              {/* SoundCloud embed */}
+              <iframe
+                width="100%"
+                height="80"
+                style={{ border: 'none', marginBottom: '8px', display: 'block' }}
+                src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/luvisaea/sweettooth&color=%23c1121f&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false"
+                allow="autoplay"
+              />
+
+              <p style={{ textAlign: 'center', fontSize: '9px', fontWeight: 900, letterSpacing: '0.2em', color: '#1a0d04', fontFamily: 'Arial Black, sans-serif', textTransform: 'uppercase' }}>
+                LISTEN OR ELSE.
+              </p>
+            </div>
           </div>
         </div>
       </section>
