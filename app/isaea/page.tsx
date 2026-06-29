@@ -275,32 +275,125 @@ export default function IsaeaPage() {
         <rect width="100%" height="100%" filter="url(#noise)" />
       </svg>
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-16 lg:px-24 relative overflow-hidden pt-24 md:pt-0">
-        <div className="relative flex flex-col justify-center z-10 w-full md:w-[45%] order-2 md:order-1 pb-12 md:pb-0 min-h-[50vh] md:min-h-screen">
-          <ParticleCanvas />
-          <div 
-            className="absolute inset-0 -z-10 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle at center, rgba(193, 18, 31, 0.15) 0%, transparent 70%)'
-            }}
-          />
-          <h1 
-            className="font-serif font-bold leading-none mb-2"
-            style={{ fontSize: 'clamp(3rem, 11vw, 12rem)', fontFamily: 'Georgia, serif', color: '#f0ece4' }}
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#0a0a0a' }}>
+        {/* Full-width petal canvas */}
+        <ParticleCanvas />
+
+        {/* Deep red radial spotlight glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse 70% 60% at 35% 55%, rgba(193, 18, 31, 0.30) 0%, rgba(193, 18, 31, 0.08) 50%, transparent 80%)'
+          }}
+        />
+
+        {/* Large rose branch bottom-left */}
+        <svg
+          className="absolute bottom-0 left-0 pointer-events-none"
+          style={{ opacity: 0.6, width: 'clamp(260px, 45vw, 620px)', height: 'clamp(400px, 65vh, 800px)' }}
+          viewBox="0 0 500 700"
+        >
+          {/* Main stem */}
+          <path d="M20,700 Q60,620 100,520 Q140,420 170,320 Q200,220 230,140 Q255,70 270,20" fill="none" stroke="#c1121f" strokeWidth="2.5" />
+          {/* Branch 1 */}
+          <path d="M100,520 Q70,480 60,440 Q50,400 65,370" fill="none" stroke="#8b1a1a" strokeWidth="1.8" />
+          {/* Branch 2 */}
+          <path d="M170,320 Q200,290 195,255 Q190,220 175,200" fill="none" stroke="#c1121f" strokeWidth="1.5" />
+          {/* Branch 3 */}
+          <path d="M230,140 Q210,110 215,80 Q218,55 230,40" fill="none" stroke="#8b1a1a" strokeWidth="1.2" />
+          {/* Leaf sprigs */}
+          <path d="M80,490 Q50,470 55,445" fill="none" stroke="#4a7c59" strokeWidth="1.2" />
+          <path d="M115,460 Q140,445 135,420" fill="none" stroke="#4a7c59" strokeWidth="1.2" />
+          <path d="M155,335 Q130,315 135,295" fill="none" stroke="#4a7c59" strokeWidth="1" />
+          <path d="M185,300 Q210,285 205,262" fill="none" stroke="#4a7c59" strokeWidth="1" />
+          <path d="M218,155 Q198,135 200,115" fill="none" stroke="#4a7c59" strokeWidth="0.9" />
+          <path d="M242,130 Q265,115 260,95" fill="none" stroke="#4a7c59" strokeWidth="0.9" />
+          {/* Leaves */}
+          <ellipse cx="52" cy="462" rx="16" ry="8" fill="#2d5a3d" opacity="0.7" transform="rotate(-35 52 462)" />
+          <ellipse cx="138" cy="432" rx="14" ry="7" fill="#3a6b4a" opacity="0.6" transform="rotate(25 138 432)" />
+          <ellipse cx="132" cy="306" rx="13" ry="6" fill="#2d5a3d" opacity="0.7" transform="rotate(-30 132 306)" />
+          <ellipse cx="208" cy="273" rx="12" ry="6" fill="#3a6b4a" opacity="0.6" transform="rotate(20 208 273)" />
+          <ellipse cx="197" cy="124" rx="10" ry="5" fill="#2d5a3d" opacity="0.7" transform="rotate(-40 197 124)" />
+          <ellipse cx="262" cy="102" rx="9" ry="4.5" fill="#3a6b4a" opacity="0.6" transform="rotate(15 262 102)" />
+          {/* Rose at bottom branch tip */}
+          <circle cx="63" cy="368" r="18" fill="#c1121f" opacity="0.85" />
+          <circle cx="63" cy="368" r="13" fill="#a00f1a" opacity="0.7" />
+          <circle cx="63" cy="368" r="8" fill="#c1121f" opacity="0.9" />
+          <circle cx="63" cy="368" r="4" fill="#8b0d15" opacity="1" />
+          <ellipse cx="47" cy="358" rx="10" ry="6" fill="#c1121f" opacity="0.6" transform="rotate(-20 47 358)" />
+          <ellipse cx="79" cy="358" rx="10" ry="6" fill="#a00f1a" opacity="0.6" transform="rotate(20 79 358)" />
+          <ellipse cx="63" cy="352" rx="9" ry="5" fill="#c1121f" opacity="0.5" transform="rotate(0 63 352)" />
+          {/* Rose at mid branch tip */}
+          <circle cx="175" cy="195" r="15" fill="#c1121f" opacity="0.8" />
+          <circle cx="175" cy="195" r="10" fill="#a00f1a" opacity="0.7" />
+          <circle cx="175" cy="195" r="6" fill="#c1121f" opacity="0.9" />
+          <circle cx="175" cy="195" r="3" fill="#8b0d15" opacity="1" />
+          <ellipse cx="162" cy="186" rx="8" ry="5" fill="#c1121f" opacity="0.5" transform="rotate(-20 162 186)" />
+          <ellipse cx="188" cy="186" rx="8" ry="5" fill="#a00f1a" opacity="0.5" transform="rotate(20 188 186)" />
+          {/* Rose at top branch tip */}
+          <circle cx="228" cy="38" r="12" fill="#c1121f" opacity="0.75" />
+          <circle cx="228" cy="38" r="8" fill="#a00f1a" opacity="0.7" />
+          <circle cx="228" cy="38" r="4" fill="#c1121f" opacity="0.9" />
+          {/* Bud on main stem */}
+          <ellipse cx="155" cy="330" rx="8" ry="12" fill="#c1121f" opacity="0.7" />
+          <ellipse cx="155" cy="323" rx="5" ry="7" fill="#8b0d15" opacity="0.8" />
+          {/* Bud 2 */}
+          <ellipse cx="244" cy="108" rx="6" ry="9" fill="#c1121f" opacity="0.6" />
+          <ellipse cx="244" cy="103" rx="4" ry="5" fill="#8b0d15" opacity="0.7" />
+          {/* Small decorative dots along stem */}
+          <circle cx="90" cy="540" r="3" fill="#c1121f" opacity="0.5" />
+          <circle cx="145" cy="400" r="2.5" fill="#f0ece4" opacity="0.4" />
+          <circle cx="200" cy="260" r="2" fill="#c1121f" opacity="0.5" />
+          <circle cx="248" cy="165" r="2" fill="#f0ece4" opacity="0.4" />
+        </svg>
+
+        {/* Smaller floral sprig top-right */}
+        <svg
+          className="absolute top-0 right-0 pointer-events-none"
+          style={{ opacity: 0.3, width: 'clamp(160px, 28vw, 380px)', height: 'clamp(200px, 40vh, 480px)' }}
+          viewBox="0 0 300 380"
+        >
+          <path d="M280,0 Q250,40 220,90 Q190,140 170,200 Q155,250 150,300" fill="none" stroke="#c1121f" strokeWidth="1.8" />
+          <path d="M220,90 Q250,110 255,140" fill="none" stroke="#8b1a1a" strokeWidth="1.3" />
+          <path d="M170,200 Q140,210 135,240" fill="none" stroke="#8b1a1a" strokeWidth="1.1" />
+          <path d="M222,95 Q245,80 250,60" fill="none" stroke="#4a7c59" strokeWidth="1" />
+          <path d="M200,130 Q178,125 175,108" fill="none" stroke="#4a7c59" strokeWidth="1" />
+          <path d="M168,205 Q148,195 145,178" fill="none" stroke="#4a7c59" strokeWidth="0.9" />
+          <ellipse cx="248" cy="68" rx="11" ry="5.5" fill="#2d5a3d" opacity="0.6" transform="rotate(25 248 68)" />
+          <ellipse cx="173" cy="110" rx="10" ry="5" fill="#3a6b4a" opacity="0.5" transform="rotate(-20 173 110)" />
+          <ellipse cx="143" cy="180" rx="9" ry="4.5" fill="#2d5a3d" opacity="0.6" transform="rotate(-35 143 180)" />
+          {/* Rose drooping at first branch */}
+          <circle cx="257" cy="144" r="13" fill="#c1121f" opacity="0.8" />
+          <circle cx="257" cy="144" r="9" fill="#a00f1a" opacity="0.7" />
+          <circle cx="257" cy="144" r="5" fill="#c1121f" opacity="0.9" />
+          <ellipse cx="245" cy="136" rx="7" ry="4" fill="#c1121f" opacity="0.5" transform="rotate(-15 245 136)" />
+          <ellipse cx="269" cy="136" rx="7" ry="4" fill="#a00f1a" opacity="0.5" transform="rotate(15 269 136)" />
+          {/* Small bud at second branch */}
+          <ellipse cx="133" cy="243" rx="6" ry="9" fill="#c1121f" opacity="0.65" />
+          <ellipse cx="133" cy="237" rx="4" ry="5" fill="#8b0d15" opacity="0.75" />
+          <circle cx="230" cy="50" r="3" fill="#c1121f" opacity="0.5" />
+          <circle cx="185" cy="170" r="2" fill="#f0ece4" opacity="0.4" />
+        </svg>
+
+        {/* Centered text content */}
+        <div className="relative z-10 flex flex-col items-center text-center px-6">
+          <h1
+            className="font-serif font-bold leading-none mb-3"
+            style={{ fontSize: 'clamp(4rem, 15vw, 16rem)', fontFamily: 'Georgia, serif', color: '#f0ece4' }}
           >
             isaea
           </h1>
-          <div className="w-0 h-px mb-4" style={{ backgroundColor: '#c1121f', animation: 'drawLine 1.5s ease-out forwards 0.5s' }} />
+          <div className="h-px mb-5 mx-auto" style={{ backgroundColor: '#c1121f', width: 'clamp(60px, 8vw, 120px)', animation: 'drawLine 1.5s ease-out forwards 0.5s' }} />
           <p className="text-sm tracking-[0.3em] mb-2" style={{ color: '#666' }}>
             ( eye-ZAY-uh )
           </p>
-          <p className="text-sm italic mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+          <p className="text-sm italic mb-8" style={{ fontFamily: 'Georgia, serif', color: '#f0ece4', opacity: 0.7 }}>
             alternative / midwest emo
           </p>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://open.spotify.com/artist/5AEyf6RIal4GRXB6paYfoZ" 
-              target="_blank" 
+          <div className="flex items-center gap-5">
+            <a
+              href="https://open.spotify.com/artist/5AEyf6RIal4GRXB6paYfoZ"
+              target="_blank"
               rel="noopener noreferrer"
               className="hover:opacity-70 transition-opacity"
             >
@@ -308,10 +401,10 @@ export default function IsaeaPage() {
                 <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
               </svg>
             </a>
-            <span style={{ color: '#666', fontSize: '12px' }}>•</span>
-            <a 
-              href="https://music.apple.com/us/artist/isaea/1849698047" 
-              target="_blank" 
+            <span style={{ color: '#444', fontSize: '12px' }}>•</span>
+            <a
+              href="https://music.apple.com/us/artist/isaea/1849698047"
+              target="_blank"
               rel="noopener noreferrer"
               className="hover:opacity-70 transition-opacity"
             >
@@ -319,10 +412,10 @@ export default function IsaeaPage() {
                 <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
               </svg>
             </a>
-            <span style={{ color: '#666', fontSize: '12px' }}>•</span>
-            <a 
-              href="https://instagram.com/luv4isaea" 
-              target="_blank" 
+            <span style={{ color: '#444', fontSize: '12px' }}>•</span>
+            <a
+              href="https://instagram.com/luv4isaea"
+              target="_blank"
               rel="noopener noreferrer"
               className="hover:opacity-70 transition-opacity"
             >
@@ -332,87 +425,6 @@ export default function IsaeaPage() {
             </a>
           </div>
         </div>
-        <div className="relative w-full h-[50vh] md:h-screen md:w-[55%] order-1 md:order-2">
-          <svg 
-            className="absolute inset-0 pointer-events-none"
-            style={{ opacity: 0.08 }}
-            viewBox="0 0 400 800"
-          >
-            <ellipse cx="100" cy="200" rx="20" ry="10" fill="#c1121f" transform="rotate(-30 100 200)" />
-            <ellipse cx="300" cy="400" rx="15" ry="8" fill="#f0ece4" transform="rotate(45 300 400)" />
-            <ellipse cx="150" cy="600" rx="18" ry="9" fill="#c1121f" transform="rotate(-60 150 600)" />
-            <ellipse cx="350" cy="150" rx="12" ry="6" fill="#f0ece4" transform="rotate(30 350 150)" />
-            <ellipse cx="200" cy="700" rx="16" ry="8" fill="#c1121f" transform="rotate(-45 200 700)" />
-            <ellipse cx="80" cy="500" rx="14" ry="7" fill="#f0ece4" transform="rotate(60 80 500)" />
-            <circle cx="250" cy="300" r="8" fill="#c1121f" opacity="0.5" />
-            <circle cx="120" cy="450" r="6" fill="#f0ece4" opacity="0.4" />
-            <circle cx="320" cy="550" r="7" fill="#c1121f" opacity="0.5" />
-          </svg>
-          <div 
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: `url(https://i.scdn.co/image/ab6761610000e5eb5db2154be23fcc902025a6ac)`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center top',
-              maskImage: 'linear-gradient(to left, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 40%, black 60%)',
-              WebkitMaskImage: 'linear-gradient(to left, transparent 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.5) 40%, black 60%)'
-            }}
-          />
-          <div 
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to right, transparent 60%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0.8) 95%, black 100%)'
-            }}
-          />
-        </div>
-        <svg 
-          className="absolute bottom-0 left-0 w-[50vw] h-[70vh] pointer-events-none"
-          style={{ opacity: 0.5 }}
-          viewBox="0 0 400 560"
-        >
-          <path 
-            d="M30,560 Q60,500 90,420 T150,280 T210,140 T270,50" 
-            fill="none" 
-            stroke="#c1121f" 
-            strokeWidth="1.5"
-          />
-          <path 
-            d="M90,420 Q70,380 80,340" 
-            fill="none" 
-            stroke="#f0ece4" 
-            strokeWidth="1.2"
-          />
-          <path 
-            d="M150,280 Q170,240 160,200" 
-            fill="none" 
-            stroke="#c1121f" 
-            strokeWidth="1"
-          />
-          <path 
-            d="M210,140 Q190,100 200,60" 
-            fill="none" 
-            stroke="#f0ece4" 
-            strokeWidth="0.8"
-          />
-          <ellipse cx="60" cy="500" rx="25" ry="12" fill="#c1121f" opacity="0.7" transform="rotate(-20 60 500)" />
-          <ellipse cx="90" cy="420" rx="20" ry="10" fill="#f0ece4" opacity="0.5" transform="rotate(-30 90 420)" />
-          <ellipse cx="150" cy="280" rx="18" ry="9" fill="#c1121f" opacity="0.8" transform="rotate(-40 150 280)" />
-          <ellipse cx="210" cy="140" rx="15" ry="7" fill="#f0ece4" opacity="0.6" transform="rotate(-50 210 140)" />
-          <ellipse cx="270" cy="50" rx="12" ry="6" fill="#c1121f" opacity="0.7" transform="rotate(-60 270 50)" />
-          <circle cx="300" cy="30" r="10" fill="#c1121f" opacity="0.8" />
-          <path d="M70,480 Q80,440 90,400" fill="none" stroke="#c1121f" strokeWidth="0.8" opacity="0.6" />
-          <path d="M110,380 Q100,340 115,300" fill="none" stroke="#f0ece4" strokeWidth="0.8" opacity="0.5" />
-          <path d="M160,260 Q175,220 165,180" fill="none" stroke="#c1121f" strokeWidth="0.8" opacity="0.6" />
-          <path d="M220,120 Q205,80 215,40" fill="none" stroke="#f0ece4" strokeWidth="0.8" opacity="0.5" />
-          <ellipse cx="80" cy="460" rx="15" ry="7" fill="#f0ece4" opacity="0.5" transform="rotate(-25 80 460)" />
-          <ellipse cx="120" cy="360" rx="12" ry="6" fill="#c1121f" opacity="0.6" transform="rotate(-35 120 360)" />
-          <ellipse cx="170" cy="240" rx="10" ry="5" fill="#f0ece4" opacity="0.5" transform="rotate(-45 170 240)" />
-          <ellipse cx="230" cy="100" rx="8" ry="4" fill="#c1121f" opacity="0.6" transform="rotate(-55 230 100)" />
-          <circle cx="95" cy="440" r="6" fill="#c1121f" opacity="0.5" />
-          <circle cx="135" cy="340" r="5" fill="#f0ece4" opacity="0.4" />
-          <circle cx="185" cy="220" r="4" fill="#c1121f" opacity="0.5" />
-          <circle cx="245" cy="80" r="3" fill="#f0ece4" opacity="0.4" />
-        </svg>
       </section>
 
       {/* Marquee Strip */}
