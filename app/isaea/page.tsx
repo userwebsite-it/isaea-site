@@ -329,10 +329,10 @@ export default function IsaeaPage() {
           }}
         />
 
-        {/* Large rose branch bottom-left */}
+        {/* Large rose branch bottom-left — shifted right to make room for bouquet */}
         <svg
-          className="absolute bottom-0 left-0 pointer-events-none"
-          style={{ opacity: 0.8, width: 'clamp(260px, 45vw, 620px)', height: 'clamp(400px, 65vh, 800px)' }}
+          className="absolute bottom-0 pointer-events-none"
+          style={{ left: '10%', opacity: 0.8, width: 'clamp(260px, 45vw, 620px)', height: 'clamp(400px, 65vh, 800px)' }}
           viewBox="0 0 500 700"
         >
           {/* Main stem */}
@@ -417,73 +417,115 @@ export default function IsaeaPage() {
           <circle cx="185" cy="170" r="2" fill="#f0ece4" opacity="0.4" />
         </svg>
 
-        {/* Polaroid card — left side, desktop only */}
-        <div
-          className="hidden md:block absolute z-20"
-          style={{
-            left: '3%',
-            top: '60%',
-            transform: 'translateY(-50%) rotate(-6deg)',
-            width: '160px',
-            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-            cursor: 'default'
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(-2deg) translateY(-6px)';
-            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 16px 40px rgba(0,0,0,0.7)';
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(-6deg)';
-            (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 18px rgba(0,0,0,0.5)';
-          }}
-        >
-          <div
-            style={{
-              background: '#fff',
-              padding: '8px 8px 28px 8px',
-              boxShadow: '0 4px 18px rgba(0,0,0,0.5)'
-            }}
-          >
-            <Image
-              src="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db"
-              alt="sweettooth"
-              width={144}
-              height={144}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-            />
-            <p
-              style={{
-                textAlign: 'center',
-                marginTop: '6px',
-                fontSize: '13px',
-                color: '#2a1a0e',
-                fontFamily: '"Brush Script MT", "Comic Sans MS", cursive',
-                letterSpacing: '0.02em'
-              }}
-            >
-              late nights 🌹
-            </p>
-          </div>
-        </div>
+        {/* Album-cover bouquet — desktop only */}
+        <div className="hidden md:block absolute z-20" style={{ left: '2%', bottom: 0, height: '65vh', width: '220px' }}>
+          <svg width="220" height="100%" viewBox="0 0 220 500" style={{ overflow: 'visible' }}>
+            <defs>
+              {/* Circular clip paths for each album cover */}
+              <clipPath id="clip0"><circle cx="110" cy="30" r="30" /></clipPath>
+              <clipPath id="clip1"><circle cx="60" cy="80" r="30" /></clipPath>
+              <clipPath id="clip2"><circle cx="160" cy="70" r="30" /></clipPath>
+              <clipPath id="clip3"><circle cx="30" cy="140" r="30" /></clipPath>
+              <clipPath id="clip4"><circle cx="190" cy="130" r="30" /></clipPath>
+              {/* Drop shadow filter */}
+              <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#000" floodOpacity="0.6" />
+              </filter>
+            </defs>
 
-        {/* Scattered text fragments — far left, desktop only */}
-        <div
-          className="hidden md:block absolute pointer-events-none"
-          style={{ left: '1.5%', top: '18%', transform: 'rotate(3deg)', opacity: 0.4, fontSize: '11px', letterSpacing: '0.18em', color: '#f0ece4', fontFamily: 'Georgia, serif', textTransform: 'uppercase' }}
-        >
-          p66
-        </div>
-        <div
-          className="hidden md:block absolute pointer-events-none"
-          style={{ left: '0.8%', top: '48%', transform: 'rotate(-4deg)', opacity: 0.4, fontSize: '10px', letterSpacing: '0.14em', color: '#f0ece4', fontFamily: 'Georgia, serif' }}
-        >
-          brownsville, bk
-        </div>
-        <div
-          className="hidden md:block absolute pointer-events-none"
-          style={{ left: '1.2%', top: '78%', transform: 'rotate(2deg)', opacity: 0.4, fontSize: '10px', letterSpacing: '0.12em', color: '#f0ece4', fontFamily: 'Georgia, serif' }}
-        >
-          3,633 listeners
+            {/* ── STEMS ── */}
+            {/* Center tall */}
+            <path d="M110,500 C108,420 112,320 110,30" fill="none" stroke="#8b0000" strokeWidth="2" />
+            {/* Left mid */}
+            <path d="M110,500 C100,430 80,330 60,80" fill="none" stroke="#8b0000" strokeWidth="2" />
+            {/* Right mid */}
+            <path d="M110,500 C118,430 145,340 160,70" fill="none" stroke="#8b0000" strokeWidth="2" />
+            {/* Far left short */}
+            <path d="M110,500 C95,440 60,370 30,140" fill="none" stroke="#8b0000" strokeWidth="2" />
+            {/* Far right short */}
+            <path d="M110,500 C125,440 165,370 190,130" fill="none" stroke="#8b0000" strokeWidth="2" />
+
+            {/* ── LEAVES ── */}
+            {/* Center stem leaves */}
+            <ellipse cx="112" cy="200" rx="12" ry="5" fill="#1a3a1a" opacity="0.7" transform="rotate(10 112 200)" />
+            <ellipse cx="108" cy="320" rx="11" ry="5" fill="#1a3a1a" opacity="0.7" transform="rotate(-8 108 320)" />
+            {/* Left stem leaves */}
+            <ellipse cx="75" cy="220" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(-20 75 220)" />
+            <ellipse cx="85" cy="340" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(15 85 340)" />
+            {/* Right stem leaves */}
+            <ellipse cx="148" cy="210" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(18 148 210)" />
+            <ellipse cx="138" cy="330" rx="10" ry="4.5" fill="#1a3a1a" opacity="0.7" transform="rotate(-14 138 330)" />
+            {/* Far left leaves */}
+            <ellipse cx="45" cy="270" rx="9" ry="4" fill="#1a3a1a" opacity="0.7" transform="rotate(-25 45 270)" />
+            {/* Far right leaves */}
+            <ellipse cx="178" cy="255" rx="9" ry="4" fill="#1a3a1a" opacity="0.7" transform="rotate(22 178 255)" />
+
+            {/* ── RIBBON / BOW at tie point ── */}
+            <ellipse cx="96" cy="478" rx="18" ry="8" fill="#c1121f" opacity="0.9" transform="rotate(-20 96 478)" />
+            <ellipse cx="124" cy="478" rx="18" ry="8" fill="#c1121f" opacity="0.9" transform="rotate(20 124 478)" />
+            <ellipse cx="110" cy="480" rx="8" ry="5" fill="#a00f1a" opacity="1" />
+            <path d="M102,475 Q110,490 118,475" fill="#c1121f" opacity="0.8" />
+
+            {/* ── ALBUM COVERS with clipPath circles ── */}
+            {/* passion — center tall */}
+            <image href="https://i.scdn.co/image/ab67616d0000b27344a5b27a3699fd055f54dfe1" x="80" y="0" width="60" height="60" clipPath="url(#clip0)" filter="url(#dropShadow)" />
+            <circle cx="110" cy="30" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
+
+            {/* teeth — left mid */}
+            <image href="https://i.scdn.co/image/ab67616d0000b27382fd407b34a2bc1c49479ba3" x="30" y="50" width="60" height="60" clipPath="url(#clip1)" filter="url(#dropShadow)" />
+            <circle cx="60" cy="80" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
+
+            {/* Angel — right mid */}
+            <image href="https://i.scdn.co/image/ab67616d0000b2739a7c3a0e77be12a0cf9e3cc7" x="130" y="40" width="60" height="60" clipPath="url(#clip2)" filter="url(#dropShadow)" />
+            <circle cx="160" cy="70" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
+
+            {/* sweettooth — far left */}
+            <image href="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db" x="0" y="110" width="60" height="60" clipPath="url(#clip3)" filter="url(#dropShadow)" />
+            <circle cx="30" cy="140" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
+
+            {/* insomnia — far right */}
+            <image href="https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db" x="160" y="100" width="60" height="60" clipPath="url(#clip4)" filter="url(#dropShadow)" />
+            <circle cx="190" cy="130" r="30" fill="none" stroke="#f0ece4" strokeWidth="2" />
+          </svg>
+
+          {/* Clickable overlay buttons + labels for each album cover */}
+          {[
+            { cx: 110, cy: 30, name: 'passion', link: 'https://open.spotify.com/album/4Lk4E6CJxCka7hVweTXl13' },
+            { cx: 60,  cy: 80,  name: 'teeth',     link: 'https://open.spotify.com/album/24Ufjk9c26f06iGSUkom7v' },
+            { cx: 160, cy: 70,  name: 'Angel',     link: 'https://open.spotify.com/album/450ZSg2ugu3jm396J0dBO9' },
+            { cx: 30,  cy: 140, name: 'sweettooth',link: 'https://open.spotify.com/track/4VfxSZpCqJBf1hbl9aStay' },
+            { cx: 190, cy: 130, name: 'insomnia',  link: 'https://open.spotify.com/album/5noUTCWdwbvlP5ybkVBMwP' },
+          ].map(({ cx, cy, name, link }) => {
+            const svgW = 220;
+            const svgH = 500;
+            return (
+              <a
+                key={name}
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group absolute flex flex-col items-center"
+                style={{
+                  left: `calc(${(cx / svgW) * 100}% - 30px)`,
+                  top: `calc(${(cy / svgH) * 100}% - 30px)`,
+                  width: '60px',
+                }}
+              >
+                {/* hover scale ring */}
+                <div
+                  className="w-[60px] h-[60px] rounded-full transition-transform duration-200 group-hover:scale-110 flex items-center justify-center relative"
+                >
+                  {/* red play icon on hover */}
+                  <div className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center">
+                    <svg className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" width="18" height="18" viewBox="0 0 24 24" fill="#c1121f">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+                <span style={{ fontSize: '9px', color: '#f0ece4', opacity: 0.6, marginTop: '4px', whiteSpace: 'nowrap', letterSpacing: '0.05em' }}>{name}</span>
+              </a>
+            );
+          })}
         </div>
 
         {/* Listener stats card bottom-right */}
