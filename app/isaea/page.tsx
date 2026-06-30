@@ -257,6 +257,17 @@ function FishbowlCanvas() {
     })
   );
 
+  // Fish state
+  const fishRef = useRef({
+    x: BOWL_CX,
+    y: BOWL_CY + 30,
+    vx: 0.6,
+    vy: 0,
+    facingRight: true,
+  });
+  // Ripple effects: array of { x, y, r, alpha }
+  const ripplesRef = useRef<{ x: number; y: number; r: number; alpha: number }[]>([]);
+
   // Load images once
   const imagesRef = useRef<(HTMLImageElement | null)[]>(BOWL_ORBS.map(() => null));
   useEffect(() => {
@@ -280,9 +291,63 @@ function FishbowlCanvas() {
     ctx.scale(dpr, dpr);
 
     let animId: number;
+    let frame = 0;
+
+    const drawFish = (x: number, y: number, facingRight: boolean, tailPhase: number) => {
+      ctx.save();
+      if (!facingRight) {
+        ctx.translate(x, y);
+        ctx.scale(-1, 1);
+        ctx.translate(-x, -y);
+      }
+      // Body gradient
+      const grad = ctx.createRadialGradient(x + 4, y - 3, 2, x, y, 15);
+      grad.addColorStop(0, '#ffd060');
+      grad.addColorStop(1, '#cc5500');
+      // Body oval
+      ctx.beginPath();
+      ctx.ellipse(x, y, 15, 8, 0, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      // Fan tail — oscillates with tailPhase
+      const tailWag = Math.sin(tailPhase) * 3;
+      ctx.beginPath();
+      ctx.moveTo(x - 13, y);
+      ctx.lineTo(x - 22, y - 9 + tailWag);
+      ctx.lineTo(x - 22, y + 9 - tailWag);
+      ctx.closePath();
+      ctx.fillStyle = '#e06000';
+      ctx.fill();
+      // Dorsal fin
+      ctx.beginPath();
+      ctx.moveTo(x - 4, y - 8);
+      ctx.quadraticCurveTo(x + 2, y - 16, x + 8, y - 8);
+      ctx.closePath();
+      ctx.fillStyle = '#ff9900';
+      ctx.globalAlpha = 0.8;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      // Pectoral fin
+      ctx.beginPath();
+      ctx.ellipse(x + 2, y + 4, 6, 3, 0.4, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,180,50,0.7)';
+      ctx.fill();
+      // Eye white
+      ctx.beginPath();
+      ctx.arc(x + 9, y - 2, 3, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      // Eye pupil
+      ctx.beginPath();
+      ctx.arc(x + 10, y - 2, 1.4, 0, Math.PI * 2);
+      ctx.fillStyle = '#111';
+      ctx.fill();
+      ctx.restore();
+    };
 
     const animate = () => {
       ctx.clearRect(0, 0, 220, 300);
+      frame++;
 
       const maxDist = BOWL_R - ORB_R;
       const orbs = orbsRef.current;
@@ -344,6 +409,66 @@ function FishbowlCanvas() {
           }
         }
       }
+
+      // ── Update fish ──
+      const fish = fishRef.current;
+      const fishHalfLen = 15; // half body length
+      fish.x += fish.vx;
+      fish.y += fish.vy;
+      // Gentle vertical bob
+      fish.y += Math.sin(frame * 0.04) * 0.18;
+      fish.facingRight = fish.vx >= 0;
+
+      // Fish bounces off bowl wall (use slightly smaller radius for fish)
+      const fishMaxDist = BOWL_R - fishHalfLen - 4;
+      {
+        const fdx = fish.x - BOWL_CX;
+        const fdy = fish.y - BOWL_CY;
+        const fdist = Math.sqrt(fdx * fdx + fdy * fdy);
+        if (fdist > fishMaxDist) {
+          const nx = fdx / fdist; const ny = fdy / fdist;
+          const dot = fish.vx * nx + fish.vy * ny;
+          fish.vx -= 2 * dot * nx;
+          fish.vy -= 2 * dot * ny;
+          fish.x = BOWL_CX + nx * fishMaxDist;
+          fish.y = BOWL_CY + ny * fishMaxDist;
+        }
+      }
+      // Fish stays below water line
+      if (fish.y - 10 < WATER_TOP) {
+        fish.y = WATER_TOP + 10;
+        if (fish.vy < 0) fish.vy = -fish.vy;
+      }
+
+      // Fish vs orb collision
+      orbs.forEach((o) => {
+        const cdx = fish.x - o.x; const cdy = fish.y - o.y;
+        const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
+        if (cdist < fishHalfLen + ORB_R + 4 && cdist > 0) {
+          fish.vx = -fish.vx;
+          fish.vy += (Math.random() - 0.5) * 0.3;
+          // Push fish away
+          fish.x += (cdx / cdist) * 4;
+          fish.y += (cdy / cdist) * 4;
+          // Spawn ripple
+          ripplesRef.current.push({ x: (fish.x + o.x) / 2, y: (fish.y + o.y) / 2, r: 4, alpha: 0.8 });
+        }
+      });
+
+      // Update and draw ripples
+      ripplesRef.current = ripplesRef.current.filter((rip) => rip.alpha > 0.02);
+      ripplesRef.current.forEach((rip) => {
+        ctx.beginPath();
+        ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(180,220,255,${rip.alpha})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        rip.r += 1.2;
+        rip.alpha *= 0.88;
+      });
+
+      // Draw fish
+      drawFish(fish.x, fish.y, fish.facingRight, frame * 0.18);
 
       // Draw orbs
       orbsRef.current.forEach((o, i) => {
