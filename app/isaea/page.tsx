@@ -222,6 +222,215 @@ function ParticleCanvas() {
   );
 }
 
+const BOWL_ORBS = [
+  { src: 'https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db', name: 'sweettooth', link: 'https://open.spotify.com/track/4VfxSZpCqJBf1hbl9aStay' },
+  { src: 'https://i.scdn.co/image/ab67616d0000b27344a5b27a3699fd055f54dfe1', name: 'passion',    link: 'https://open.spotify.com/album/4Lk4E6CJxCka7hVweTXl13' },
+  { src: 'https://i.scdn.co/image/ab67616d0000b27382fd407b34a2bc1c49479ba3', name: 'teeth',      link: 'https://open.spotify.com/album/24Ufjk9c26f06iGSUkom7v' },
+  { src: 'https://i.scdn.co/image/ab67616d0000b2739a7c3a0e77be12a0cf9e3cc7', name: 'Angel',      link: 'https://open.spotify.com/album/450ZSg2ugu3jm396J0dBO9' },
+  { src: 'https://i.scdn.co/image/ab67616d0000b273e5efcf8936ab6a66aff5b2db', name: 'insomnia',   link: 'https://open.spotify.com/album/5noUTCWdwbvlP5ybkVBMwP' },
+  { src: 'https://i.scdn.co/image/ab67616d0000b27382fd407b34a2bc1c49479ba3', name: 'misa',       link: 'https://open.spotify.com/album/24Ufjk9c26f06iGSUkom7v' },
+];
+
+// Bowl geometry constants (px, matches SVG viewBox 220×300)
+const BOWL_CX = 110;   // center x of bowl circle
+const BOWL_CY = 115;   // center y of bowl circle
+const BOWL_R  = 95;    // radius of bowl interior (slightly inside stroke)
+const ORB_R   = 22.5;  // orb radius (45px diameter)
+
+function FishbowlCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [hoveredOrb, setHoveredOrb] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // orb state lives in a ref so RAF can read it without stale closures
+  const orbsRef = useRef(
+    BOWL_ORBS.map(() => ({
+      x: BOWL_CX + (Math.random() - 0.5) * (BOWL_R - ORB_R) * 1.4,
+      y: BOWL_CY + (Math.random() - 0.5) * (BOWL_R - ORB_R) * 1.0,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+    }))
+  );
+
+  // Load images once
+  const imagesRef = useRef<(HTMLImageElement | null)[]>(BOWL_ORBS.map(() => null));
+  useEffect(() => {
+    BOWL_ORBS.forEach((orb, i) => {
+      const img = new window.Image();
+      img.crossOrigin = 'anonymous';
+      img.src = orb.src;
+      img.onload = () => { imagesRef.current[i] = img; };
+    });
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    // Scale canvas for device pixel ratio
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = 220 * dpr;
+    canvas.height = 300 * dpr;
+    ctx.scale(dpr, dpr);
+
+    let animId: number;
+
+    const animate = () => {
+      ctx.clearRect(0, 0, 220, 300);
+
+      // Update orb physics — bounce inside bowl circle
+      orbsRef.current.forEach((o) => {
+        o.x += o.vx;
+        o.y += o.vy;
+        // Keep orb center inside bowl circle (BOWL_R - ORB_R)
+        const dx = o.x - BOWL_CX;
+        const dy = o.y - BOWL_CY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = BOWL_R - ORB_R;
+        if (dist > maxDist) {
+          // Reflect velocity component along normal
+          const nx = dx / dist;
+          const ny = dy / dist;
+          const dot = o.vx * nx + o.vy * ny;
+          o.vx -= 2 * dot * nx;
+          o.vy -= 2 * dot * ny;
+          // Push back inside
+          o.x = BOWL_CX + nx * maxDist;
+          o.y = BOWL_CY + ny * maxDist;
+        }
+        // Add tiny random drift each frame
+        o.vx += (Math.random() - 0.5) * 0.02;
+        o.vy += (Math.random() - 0.5) * 0.02;
+        // Clamp speed
+        const speed = Math.sqrt(o.vx * o.vx + o.vy * o.vy);
+        if (speed > 0.8) { o.vx = (o.vx / speed) * 0.8; o.vy = (o.vy / speed) * 0.8; }
+        if (speed < 0.1) { o.vx *= 1.05; o.vy *= 1.05; }
+      });
+
+      // Draw orbs
+      orbsRef.current.forEach((o, i) => {
+        const img = imagesRef.current[i];
+        ctx.save();
+        // Glow
+        ctx.shadowColor = 'rgba(100,150,255,0.35)';
+        ctx.shadowBlur = 12;
+        // Clip to circle
+        ctx.beginPath();
+        ctx.arc(o.x, o.y, ORB_R, 0, Math.PI * 2);
+        ctx.clip();
+        if (img) {
+          ctx.drawImage(img, o.x - ORB_R, o.y - ORB_R, ORB_R * 2, ORB_R * 2);
+        } else {
+          ctx.fillStyle = 'rgba(100,120,180,0.5)';
+          ctx.fill();
+        }
+        ctx.restore();
+        // Border ring
+        ctx.beginPath();
+        ctx.arc(o.x, o.y, ORB_R, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(240,236,228,0.55)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      });
+
+      animId = requestAnimationFrame(animate);
+    };
+    animate();
+    return () => cancelAnimationFrame(animId);
+  }, []);
+
+  // Mouse hit-test for hover (overlay divs handle click; canvas just for animation)
+  const getHoveredOrb = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return null;
+    // The container is 220px wide, 300px tall at CSS size
+    const scaleX = 220 / rect.width;
+    const scaleY = 300 / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top)  * scaleY;
+    for (let i = 0; i < orbsRef.current.length; i++) {
+      const o = orbsRef.current[i];
+      const dx = mx - o.x;
+      const dy = my - o.y;
+      if (dx * dx + dy * dy <= (ORB_R + 4) * (ORB_R + 4)) return i;
+    }
+    return null;
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="hidden md:block absolute z-20"
+      style={{ left: '3%', top: '50%', transform: 'translateY(-50%)', width: '220px', height: '300px' }}
+      onMouseMove={(e) => setHoveredOrb(getHoveredOrb(e))}
+      onMouseLeave={() => setHoveredOrb(null)}
+    >
+      {/* SVG fishbowl shell — pointer-events none so clicks pass through to orb links */}
+      <svg
+        width="220" height="300" viewBox="0 0 220 300"
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 1 }}
+      >
+        <defs>
+          <radialGradient id="bowlFill" cx="50%" cy="45%" r="55%">
+            <stop offset="0%"   stopColor="rgba(20,40,80,0.25)" />
+            <stop offset="100%" stopColor="rgba(5,10,25,0.50)" />
+          </radialGradient>
+        </defs>
+        {/* Bowl circle */}
+        <circle cx="110" cy="115" r="97" fill="url(#bowlFill)" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
+        {/* Glass shine highlight */}
+        <path d="M68,60 Q75,45 95,42" fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="2.5" strokeLinecap="round" />
+        {/* Water line near top */}
+        <path d="M30,68 Q70,62 110,65 Q150,62 190,68" fill="none" stroke="rgba(100,160,255,0.18)" strokeWidth="1" />
+        {/* Neck */}
+        <path d="M74,208 Q68,222 65,238 L155,238 Q152,222 146,208 Z" fill="rgba(10,20,40,0.5)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+        {/* Base */}
+        <rect x="50" y="238" width="120" height="16" rx="3" fill="rgba(15,10,5,0.75)" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+        {/* Bubbles — animated via CSS */}
+        <circle className="bubble1" cx="90"  cy="195" r="3" fill="rgba(180,210,255,0.25)" />
+        <circle className="bubble2" cx="110" cy="200" r="2" fill="rgba(180,210,255,0.20)" />
+        <circle className="bubble3" cx="128" cy="192" r="2.5" fill="rgba(180,210,255,0.22)" />
+      </svg>
+
+      {/* Canvas for animated orbs — pointer-events none */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{ width: '220px', height: '300px', zIndex: 2 }}
+      />
+
+      {/* Invisible click targets for each orb */}
+      {BOWL_ORBS.map((orb, i) => (
+        <a
+          key={orb.name + i}
+          href={orb.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute rounded-full flex items-center justify-center transition-transform duration-150"
+          style={{
+            width: `${ORB_R * 2}px`,
+            height: `${ORB_R * 2}px`,
+            zIndex: 3,
+            transform: hoveredOrb === i ? 'scale(1.18)' : 'scale(1)',
+            background: 'transparent',
+            // position updated by JS each frame — start at center
+            left: `${orbsRef.current[i].x - ORB_R}px`,
+            top:  `${orbsRef.current[i].y  - ORB_R}px`,
+          }}
+        >
+          {hoveredOrb === i && (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#c1121f" style={{ filter: 'drop-shadow(0 0 3px #000)' }}>
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          )}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 export default function IsaeaPage() {
   const [hoveredDisc, setHoveredDisc] = useState<string | null>(null);
   const [pulsedDisc, setPulsedDisc] = useState<string | null>(null);
@@ -320,6 +529,9 @@ export default function IsaeaPage() {
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#0a0a0a' }}>
         {/* Full-width petal canvas */}
         <ParticleCanvas />
+
+        {/* Fishbowl with floating album cover orbs */}
+        <FishbowlCanvas />
 
         {/* Deep red radial spotlight glow */}
         <div
