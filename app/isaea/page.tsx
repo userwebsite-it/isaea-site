@@ -232,10 +232,11 @@ const BOWL_ORBS = [
 ];
 
 // Bowl geometry constants (px, matches SVG viewBox 220×300)
-const BOWL_CX = 110;   // center x of bowl circle
-const BOWL_CY = 115;   // center y of bowl circle
-const BOWL_R  = 95;    // radius of bowl interior (slightly inside stroke)
-const ORB_R   = 11;    // orb radius (22px diameter)
+const BOWL_CX    = 110;   // center x of bowl circle
+const BOWL_CY    = 115;   // center y of bowl circle
+const BOWL_R     = 95;    // radius of bowl interior
+const ORB_R      = 11;    // orb radius (22px diameter)
+const WATER_TOP  = 40;    // y-coordinate of water surface line (bowl open above this)
 
 function FishbowlCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -283,27 +284,35 @@ function FishbowlCanvas() {
     const animate = () => {
       ctx.clearRect(0, 0, 220, 300);
 
-      // Update orb physics — bounce inside bowl circle
-      orbsRef.current.forEach((o) => {
+      const maxDist = BOWL_R - ORB_R;
+      const orbs = orbsRef.current;
+
+      // Update orb physics
+      orbs.forEach((o) => {
         o.x += o.vx;
         o.y += o.vy;
-        // Keep orb center inside bowl circle (BOWL_R - ORB_R)
+
+        // Bounce off curved bowl wall
         const dx = o.x - BOWL_CX;
         const dy = o.y - BOWL_CY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        const maxDist = BOWL_R - ORB_R;
         if (dist > maxDist) {
-          // Reflect velocity component along normal
           const nx = dx / dist;
           const ny = dy / dist;
           const dot = o.vx * nx + o.vy * ny;
           o.vx -= 2 * dot * nx;
           o.vy -= 2 * dot * ny;
-          // Push back inside
           o.x = BOWL_CX + nx * maxDist;
           o.y = BOWL_CY + ny * maxDist;
         }
-        // Add tiny random drift each frame
+
+        // Constrain below water line
+        if (o.y - ORB_R < WATER_TOP) {
+          o.y = WATER_TOP + ORB_R;
+          if (o.vy < 0) o.vy = -o.vy;
+        }
+
+        // Random drift
         o.vx += (Math.random() - 0.5) * 0.02;
         o.vy += (Math.random() - 0.5) * 0.02;
         // Clamp speed
@@ -311,6 +320,30 @@ function FishbowlCanvas() {
         if (speed > 0.8) { o.vx = (o.vx / speed) * 0.8; o.vy = (o.vy / speed) * 0.8; }
         if (speed < 0.1) { o.vx *= 1.05; o.vy *= 1.05; }
       });
+
+      // Orb-orb collision detection
+      for (let i = 0; i < orbs.length; i++) {
+        for (let j = i + 1; j < orbs.length; j++) {
+          const a = orbs[i]; const b = orbs[j];
+          const cdx = b.x - a.x; const cdy = b.y - a.y;
+          const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
+          const minDist = ORB_R * 2;
+          if (cdist < minDist && cdist > 0) {
+            const nx = cdx / cdist; const ny = cdy / cdist;
+            // Separate
+            const overlap = (minDist - cdist) / 2;
+            a.x -= nx * overlap; a.y -= ny * overlap;
+            b.x += nx * overlap; b.y += ny * overlap;
+            // Swap velocity along collision normal
+            const dvx = a.vx - b.vx; const dvy = a.vy - b.vy;
+            const dot = dvx * nx + dvy * ny;
+            if (dot > 0) {
+              a.vx -= dot * nx; a.vy -= dot * ny;
+              b.vx += dot * nx; b.vy += dot * ny;
+            }
+          }
+        }
+      }
 
       // Draw orbs
       orbsRef.current.forEach((o, i) => {
@@ -377,20 +410,34 @@ function FishbowlCanvas() {
         style={{ zIndex: 1 }}
       >
         <defs>
-          <radialGradient id="bowlFill" cx="50%" cy="45%" r="55%">
-            <stop offset="0%"   stopColor="rgba(20,60,120,0.55)" />
-            <stop offset="100%" stopColor="rgba(8,20,55,0.70)" />
+          {/* Clip the water fill to the lower portion of the bowl */}
+          <clipPath id="waterClip">
+            <rect x="10" y="40" width="200" height="300" />
+          </clipPath>
+          <radialGradient id="waterFill" cx="50%" cy="60%" r="55%">
+            <stop offset="0%"   stopColor="rgba(15,80,180,0.70)" />
+            <stop offset="100%" stopColor="rgba(5,25,90,0.80)" />
           </radialGradient>
           <filter id="bowlGlow" x="-8%" y="-8%" width="116%" height="116%">
-            <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="rgba(100,180,255,0.15)" />
+            <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="rgba(100,180,255,0.18)" />
           </filter>
         </defs>
-        {/* Bowl circle with outer glow */}
-        <circle cx="110" cy="115" r="97" fill="url(#bowlFill)" stroke="rgba(255,255,255,0.40)" strokeWidth="1.5" filter="url(#bowlGlow)" />
+        {/* Water fill — clipped below water line */}
+        <circle cx="110" cy="115" r="97" fill="url(#waterFill)" clipPath="url(#waterClip)" />
+        {/* Open bowl — lower curved glass arc from left rim to right rim, open at top */}
+        <path
+          d="M18,115 A92,92 0 0,0 202,115"
+          fill="none" stroke="rgba(255,255,255,0.40)" strokeWidth="1.5"
+          filter="url(#bowlGlow)"
+        />
+        {/* Left side wall up to water line */}
+        <line x1="18" y1="115" x2="26" y2="40" stroke="rgba(255,255,255,0.30)" strokeWidth="1.5" />
+        {/* Right side wall up to water line */}
+        <line x1="202" y1="115" x2="194" y2="40" stroke="rgba(255,255,255,0.30)" strokeWidth="1.5" />
         {/* Glass shine highlight */}
         <path d="M68,60 Q75,45 95,42" fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="2.5" strokeLinecap="round" />
-        {/* Water line near top */}
-        <path d="M30,68 Q70,62 110,65 Q150,62 190,68" fill="none" stroke="rgba(100,160,255,0.18)" strokeWidth="1" />
+        {/* Water surface line */}
+        <path d="M26,40 Q68,34 110,37 Q152,34 194,40" fill="none" stroke="rgba(140,200,255,0.55)" strokeWidth="1.2" />
         {/* Neck */}
         <path d="M74,208 Q68,222 65,238 L155,238 Q152,222 146,208 Z" fill="rgba(10,20,40,0.5)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
         {/* Base */}
