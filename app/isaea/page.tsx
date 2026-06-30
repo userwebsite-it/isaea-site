@@ -235,21 +235,25 @@ const BOWL_ORBS = [
 const BOWL_CX = 110;   // center x of bowl circle
 const BOWL_CY = 115;   // center y of bowl circle
 const BOWL_R  = 95;    // radius of bowl interior (slightly inside stroke)
-const ORB_R   = 22.5;  // orb radius (45px diameter)
+const ORB_R   = 11;    // orb radius (22px diameter)
 
 function FishbowlCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hoveredOrb, setHoveredOrb] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // orb state lives in a ref so RAF can read it without stale closures
+  // orb state — spread evenly across bowl interior using angle distribution
   const orbsRef = useRef(
-    BOWL_ORBS.map(() => ({
-      x: BOWL_CX + (Math.random() - 0.5) * (BOWL_R - ORB_R) * 1.4,
-      y: BOWL_CY + (Math.random() - 0.5) * (BOWL_R - ORB_R) * 1.0,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-    }))
+    BOWL_ORBS.map((_, i) => {
+      const angle = (i / BOWL_ORBS.length) * Math.PI * 2;
+      const r = (BOWL_R - ORB_R - 8) * (0.45 + Math.random() * 0.5);
+      return {
+        x: BOWL_CX + Math.cos(angle) * r,
+        y: BOWL_CY + Math.sin(angle) * r * 0.85,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+      };
+    })
   );
 
   // Load images once
@@ -374,12 +378,15 @@ function FishbowlCanvas() {
       >
         <defs>
           <radialGradient id="bowlFill" cx="50%" cy="45%" r="55%">
-            <stop offset="0%"   stopColor="rgba(20,40,80,0.25)" />
-            <stop offset="100%" stopColor="rgba(5,10,25,0.50)" />
+            <stop offset="0%"   stopColor="rgba(20,60,120,0.55)" />
+            <stop offset="100%" stopColor="rgba(8,20,55,0.70)" />
           </radialGradient>
+          <filter id="bowlGlow" x="-8%" y="-8%" width="116%" height="116%">
+            <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="rgba(100,180,255,0.15)" />
+          </filter>
         </defs>
-        {/* Bowl circle */}
-        <circle cx="110" cy="115" r="97" fill="url(#bowlFill)" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
+        {/* Bowl circle with outer glow */}
+        <circle cx="110" cy="115" r="97" fill="url(#bowlFill)" stroke="rgba(255,255,255,0.40)" strokeWidth="1.5" filter="url(#bowlGlow)" />
         {/* Glass shine highlight */}
         <path d="M68,60 Q75,45 95,42" fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="2.5" strokeLinecap="round" />
         {/* Water line near top */}
@@ -389,9 +396,9 @@ function FishbowlCanvas() {
         {/* Base */}
         <rect x="50" y="238" width="120" height="16" rx="3" fill="rgba(15,10,5,0.75)" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
         {/* Bubbles — animated via CSS */}
-        <circle className="bubble1" cx="90"  cy="195" r="3" fill="rgba(180,210,255,0.25)" />
-        <circle className="bubble2" cx="110" cy="200" r="2" fill="rgba(180,210,255,0.20)" />
-        <circle className="bubble3" cx="128" cy="192" r="2.5" fill="rgba(180,210,255,0.22)" />
+        <circle className="bubble1" cx="90"  cy="195" r="4.5" fill="rgba(180,210,255,0.40)" />
+        <circle className="bubble2" cx="112" cy="200" r="3.5" fill="rgba(180,210,255,0.40)" />
+        <circle className="bubble3" cx="130" cy="192" r="4"   fill="rgba(180,210,255,0.40)" />
       </svg>
 
       {/* Canvas for animated orbs — pointer-events none */}
