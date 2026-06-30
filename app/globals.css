@@ -74,6 +74,52 @@ html, body {
 .bubble2 { animation: bubbleRise 4.0s ease-in 1.1s infinite; }
 .bubble3 { animation: bubbleRise 3.6s ease-in 2.0s infinite; }
 
+/* Wanted poster — mobile: relative, centered below text */
+.poster-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  width: 100%;
+}
+.poster-inner {
+  position: relative;
+  width: min(160px, 85vw);
+  transform: rotate(4deg);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: default;
+}
+.poster-inner .poster-warning  { font-size: 7px !important; }
+.poster-inner .poster-title    { font-size: 18px !important; }
+.poster-inner .poster-artist   { font-size: 15px !important; }
+.poster-inner .poster-song     { font-size: 10px !important; }
+.poster-inner .poster-stat     { font-size: 10px !important; }
+.poster-inner .poster-footer   { font-size: 7px !important; }
+.poster-inner .poster-sc       { height: 60px !important; }
+
+/* Desktop: absolute right side, bigger, more rotation */
+@media (min-width: 768px) {
+  .poster-wrapper {
+    position: absolute;
+    top: 50%;
+    right: clamp(24px, 6vw, 80px);
+    width: auto;
+    margin-top: 0;
+    display: block;
+  }
+  .poster-inner {
+    width: 280px;
+    transform: translateY(-50%) rotate(8deg);
+  }
+  .poster-inner .poster-warning  { font-size: 9px !important; }
+  .poster-inner .poster-title    { font-size: 28px !important; }
+  .poster-inner .poster-artist   { font-size: 22px !important; }
+  .poster-inner .poster-song     { font-size: 14px !important; }
+  .poster-inner .poster-stat     { font-size: 13px !important; }
+  .poster-inner .poster-footer   { font-size: 9px !important; }
+  .poster-inner .poster-sc       { height: 80px !important; }
+}
+
 .group:hover .discography-bg {
   opacity: 0.15 !important;
 }

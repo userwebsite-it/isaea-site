@@ -712,7 +712,7 @@ export default function IsaeaPage() {
         <rect width="100%" height="100%" filter="url(#noise)" />
       </svg>
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#0a0a0a' }}>
+      <section className="min-h-screen flex flex-col md:flex-row md:items-center md:justify-center items-center justify-center relative overflow-hidden pb-16 md:pb-0" style={{ backgroundColor: '#0a0a0a' }}>
         {/* Full-width petal canvas */}
         <ParticleCanvas />
 
@@ -802,23 +802,18 @@ export default function IsaeaPage() {
           </div>
         </div>
 
-        {/* Wanted Poster — hidden on mobile, absolute right side on desktop */}
+        {/* Wanted Poster — centered below text on mobile, absolute right on desktop */}
+        <div className="poster-wrapper z-20">
         <div
-          className="hidden md:block absolute z-20"
-          style={{
-            right: 'clamp(24px, 6vw, 80px)',
-            top: '50%',
-            transform: 'translateY(-50%) rotate(8deg)',
-            width: '280px',
-            transition: 'transform 0.35s ease, box-shadow 0.35s ease',
-            cursor: 'default'
-          }}
+          className="poster-inner mx-auto md:mx-0"
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(4deg)';
+            const isMd = window.innerWidth >= 768;
+            (e.currentTarget as HTMLDivElement).style.transform = isMd ? 'translateY(-50%) rotate(4deg)' : 'rotate(2deg)';
             (e.currentTarget as HTMLDivElement).style.boxShadow = '0 24px 60px rgba(0,0,0,0.8)';
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-50%) rotate(8deg)';
+            const isMd = window.innerWidth >= 768;
+            (e.currentTarget as HTMLDivElement).style.transform = isMd ? 'translateY(-50%) rotate(8deg)' : 'rotate(4deg)';
             (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
           }}
         >
@@ -873,10 +868,10 @@ export default function IsaeaPage() {
 
             {/* Poster content */}
             <div className="relative" style={{ zIndex: 2 }}>
-              <p style={{ textAlign: 'center', fontSize: '9px', fontWeight: 900, letterSpacing: '0.25em', color: '#1a0d04', marginBottom: '3px', fontFamily: 'Arial Black, sans-serif' }}>
+              <p className="poster-warning" style={{ textAlign: 'center', fontSize: '9px', fontWeight: 900, letterSpacing: '0.25em', color: '#1a0d04', marginBottom: '3px', fontFamily: 'Arial Black, sans-serif' }}>
                 ⚠ WARNING ⚠
               </p>
-              <p style={{ textAlign: 'center', fontSize: '28px', fontWeight: 900, lineHeight: 1, letterSpacing: '0.04em', color: '#1a0d04', marginBottom: '8px', fontFamily: 'Georgia, serif', textTransform: 'uppercase' }}>
+              <p className="poster-title" style={{ textAlign: 'center', fontSize: '28px', fontWeight: 900, lineHeight: 1, letterSpacing: '0.04em', color: '#1a0d04', marginBottom: '8px', fontFamily: 'Georgia, serif', textTransform: 'uppercase' }}>
                 NEW DROP
               </p>
 
@@ -891,10 +886,10 @@ export default function IsaeaPage() {
                 />
               </div>
 
-              <p style={{ textAlign: 'center', fontSize: '22px', fontWeight: 900, color: '#1a0d04', marginBottom: '2px', fontFamily: 'Georgia, serif' }}>
+              <p className="poster-artist" style={{ textAlign: 'center', fontSize: '22px', fontWeight: 900, color: '#1a0d04', marginBottom: '2px', fontFamily: 'Georgia, serif' }}>
                 isaea
               </p>
-              <p style={{ textAlign: 'center', fontSize: '14px', fontStyle: 'italic', fontWeight: 700, color: '#1a0d04', marginBottom: '8px', fontFamily: 'Georgia, serif' }}>
+              <p className="poster-song" style={{ textAlign: 'center', fontSize: '14px', fontStyle: 'italic', fontWeight: 700, color: '#1a0d04', marginBottom: '8px', fontFamily: 'Georgia, serif' }}>
                 sweettooth
               </p>
 
@@ -903,12 +898,12 @@ export default function IsaeaPage() {
               <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '7px' }}>
                 <div style={{ textAlign: 'center' }}>
                   <p style={{ fontSize: '8px', letterSpacing: '0.2em', color: '#5a3a1a', fontWeight: 700, fontFamily: 'Arial, sans-serif', textTransform: 'uppercase', marginBottom: '1px' }}>Plays</p>
-                  <p style={{ fontSize: '13px', fontWeight: 900, color: '#1a0d04', fontFamily: 'Georgia, serif' }}>49,562</p>
+                  <p className="poster-stat" style={{ fontSize: '13px', fontWeight: 900, color: '#1a0d04', fontFamily: 'Georgia, serif' }}>49,562</p>
                 </div>
                 <div style={{ width: '1px', background: '#3d1f0a', opacity: 0.4 }} />
                 <div style={{ textAlign: 'center' }}>
                   <p style={{ fontSize: '8px', letterSpacing: '0.2em', color: '#5a3a1a', fontWeight: 700, fontFamily: 'Arial, sans-serif', textTransform: 'uppercase', marginBottom: '1px' }}>Released</p>
-                  <p style={{ fontSize: '13px', fontWeight: 900, color: '#1a0d04', fontFamily: 'Georgia, serif' }}>2026</p>
+                  <p className="poster-stat" style={{ fontSize: '13px', fontWeight: 900, color: '#1a0d04', fontFamily: 'Georgia, serif' }}>2026</p>
                 </div>
               </div>
 
@@ -916,6 +911,7 @@ export default function IsaeaPage() {
 
               {/* SoundCloud embed */}
               <iframe
+                className="poster-sc"
                 width="100%"
                 height="80"
                 style={{ border: 'none', marginBottom: '8px', display: 'block' }}
@@ -923,11 +919,12 @@ export default function IsaeaPage() {
                 allow="autoplay"
               />
 
-              <p style={{ textAlign: 'center', fontSize: '9px', fontWeight: 900, letterSpacing: '0.2em', color: '#1a0d04', fontFamily: 'Arial Black, sans-serif', textTransform: 'uppercase' }}>
+              <p className="poster-footer" style={{ textAlign: 'center', fontSize: '9px', fontWeight: 900, letterSpacing: '0.2em', color: '#1a0d04', fontFamily: 'Arial Black, sans-serif', textTransform: 'uppercase' }}>
                 LISTEN OR ELSE.
               </p>
             </div>
           </div>
+        </div>
         </div>
       </section>
 
