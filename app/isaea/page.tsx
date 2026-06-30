@@ -261,7 +261,7 @@ function FishbowlCanvas() {
   const fishRef = useRef({
     x: BOWL_CX,
     y: BOWL_CY + 30,
-    vx: 0.6,
+    vx: 0.24,
     vy: 0,
     facingRight: true,
   });
@@ -377,12 +377,15 @@ function FishbowlCanvas() {
           if (o.vy < 0) o.vy = -o.vy;
         }
 
+        // Friction — gradually returns blasted orbs to gentle float speed
+        o.vx *= 0.985;
+        o.vy *= 0.985;
         // Random drift
         o.vx += (Math.random() - 0.5) * 0.02;
         o.vy += (Math.random() - 0.5) * 0.02;
-        // Clamp speed
+        // Allow up to 3.0 for post-collision blast, clamp there; min nudge
         const speed = Math.sqrt(o.vx * o.vx + o.vy * o.vy);
-        if (speed > 0.8) { o.vx = (o.vx / speed) * 0.8; o.vy = (o.vy / speed) * 0.8; }
+        if (speed > 3.0) { o.vx = (o.vx / speed) * 3.0; o.vy = (o.vy / speed) * 3.0; }
         if (speed < 0.1) { o.vx *= 1.05; o.vy *= 1.05; }
       });
 
@@ -445,11 +448,15 @@ function FishbowlCanvas() {
         const cdx = fish.x - o.x; const cdy = fish.y - o.y;
         const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
         if (cdist < fishHalfLen + ORB_R + 4 && cdist > 0) {
+          // Reverse fish
           fish.vx = -fish.vx;
           fish.vy += (Math.random() - 0.5) * 0.3;
-          // Push fish away
           fish.x += (cdx / cdist) * 4;
           fish.y += (cdy / cdist) * 4;
+          // Blast orb away from fish at 3× strength
+          const blastSpeed = 2.4;
+          o.vx = -(cdx / cdist) * blastSpeed;
+          o.vy = -(cdy / cdist) * blastSpeed;
           // Spawn ripple
           ripplesRef.current.push({ x: (fish.x + o.x) / 2, y: (fish.y + o.y) / 2, r: 4, alpha: 0.8 });
         }
@@ -468,7 +475,7 @@ function FishbowlCanvas() {
       });
 
       // Draw fish
-      drawFish(fish.x, fish.y, fish.facingRight, frame * 0.18);
+      drawFish(fish.x, fish.y, fish.facingRight, frame * 0.07);
 
       // Draw orbs
       orbsRef.current.forEach((o, i) => {
