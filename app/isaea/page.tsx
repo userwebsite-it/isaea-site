@@ -528,10 +528,11 @@ function FishbowlCanvas() {
   };
 
   return (
+    <div className="fishbowl-outer z-20">
     <div
       ref={containerRef}
-      className="hidden md:block absolute z-20"
-      style={{ left: '3%', top: '50%', transform: 'translateY(-50%)', width: '220px', height: '300px' }}
+      className="fishbowl-inner"
+      style={{ width: '220px', height: '300px' }}
       onMouseMove={(e) => setHoveredOrb(getHoveredOrb(e))}
       onMouseLeave={() => setHoveredOrb(null)}
     >
@@ -613,6 +614,7 @@ function FishbowlCanvas() {
           )}
         </a>
       ))}
+    </div>
     </div>
   );
 }

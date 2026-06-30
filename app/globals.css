@@ -74,6 +74,45 @@ html, body {
 .bubble2 { animation: bubbleRise 4.0s ease-in 1.1s infinite; }
 .bubble3 { animation: bubbleRise 3.6s ease-in 2.0s infinite; }
 
+/* Fishbowl — mobile: inline-block, scaled to 50% with transform-origin top-left so it takes up 110x150px */
+.fishbowl-outer {
+  display: flex;
+  justify-content: center;
+  width: 110px;
+  height: 150px;
+  overflow: visible;
+  position: relative;
+  margin: 12px auto 0;
+  flex-shrink: 0;
+}
+.fishbowl-inner {
+  transform-origin: top left;
+  transform: scale(0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Desktop: absolute on left side, full size */
+@media (min-width: 768px) {
+  .fishbowl-outer {
+    position: absolute;
+    left: 3%;
+    top: 50%;
+    width: 220px;
+    height: 300px;
+    margin: 0;
+    display: block;
+    transform: translateY(-50%);
+  }
+  .fishbowl-inner {
+    transform: scale(1);
+    position: relative;
+    top: auto;
+    left: auto;
+  }
+}
+
 /* Wanted poster — mobile: relative, centered below text */
 .poster-wrapper {
   position: relative;
